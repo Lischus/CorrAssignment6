@@ -27,6 +27,15 @@
 //         }
 //       });
 //   }
+function getApi() {
+var requestURL = "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=61c4e10047acc72ea5e22c4f2a7d9dac"
+
+fetch(requestUrl)
+    .then(function (response) {
+        console.log("fetch the URL, please")
+        return response.json();
+    })
+}
 
 var searchButton = document.querySelector(".searchBtn")
 
@@ -42,7 +51,7 @@ function beginSearch () {
     var currentCity = $(searchRow).children(".searchBar").val()
     console.log("You sure clicked that Search Button, big guy");
     localStorage.setItem(searchRow, currentCity);
-    $(currentCity).val(localStorage.getItem(pastCities))
+    $(".searchBar").val(localStorage.getItem("[object HTMLDivElement]"))
 }
 
 searchButton.addEventListener("click", beginSearch)
