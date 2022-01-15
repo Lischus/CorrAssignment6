@@ -60,11 +60,14 @@ function getApi(city, lat, lon) {
         }).then(function (data) {
             console.log(data)
             var iconURL = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}.png`
+            var temperatureURL = ``
             console.log(iconURL)
-            for (var i = 0; i <= 5; i++) {
+            for (var i = 0; i < 5; i++) {
+                var fiveIconURL = `http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}.png`
                 var fiveDayIcon = document.createElement("img")
                 fiveDayIcon.setAttribute("class", "fiveDayWeatherIcon")
-                
+                fiveDayIcon.setAttribute("src", fiveIconURL)
+                fiveDayLocation.append(fiveDayIcon);
             }
             //use data.current for the current weather, then for loop through the data.daily for each of the five cards (don't for loop length, just for loop 5 times) when you want to put
         })
@@ -103,6 +106,8 @@ function handleSearchHistory(event) {
     var clickedCity = historyButton.getAttribute("data-search");
     getCoordinates(clickedCity)
 }
+
+//$("#currentDay").text(moment().format("MMM Do, YYYY"));
 
 searchButton.addEventListener("click", beginSearch)
 
