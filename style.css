@@ -46,7 +46,7 @@ body {
     display: block;
 }
 
-.col-lg-2, .today {
+.col-lg-2, .today, #currentDay {
     font-weight: bold;
 }
 
@@ -54,8 +54,12 @@ body {
     display:flex;
 }
 
-.fiveDayHumid, .fiveDayWind, .fiveDayTemp {
-    margin-bottom: 30px;
-    margin-top: 10px;
+.fiveDayHumid, .fiveDayWind, .fiveDayTemp, .tomorrow, .twoDays, .threeDays, .fourDays, .fiveDays {
+    margin-bottom: 29px;
+    margin-top: 6px;
     font-weight: bold;
+}
+
+.strong {
+    margin-top: 20px;
 }

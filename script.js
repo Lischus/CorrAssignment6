@@ -4,14 +4,11 @@ var searchButton = document.querySelector(".searchBtn")
 
 
 function getCoordinates(city) {
-    console.log(city)
     var coordinateURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=61c4e10047acc72ea5e22c4f2a7d9dac`
     fetch(coordinateURL)
         .then(function (response) {
-            console.log("fetch the URL, please")
             return response.json();
         }).then(function (data) {
-            console.log(data)
             getApi(city, data.coord.lat, data.coord.lon)
         })
 }
@@ -30,7 +27,6 @@ function getApi(city, lat, lon) {
 
     fetch(requestURL)
         .then(function (response) {
-            console.log("fetch the URL, please")
             return response.json();
         }).then(function (data) {
             todaysForecast.innerHTML = ''
@@ -39,9 +35,7 @@ function getApi(city, lat, lon) {
             fiveDayHumidLocation.innerHTML = ''
             fiveDayWindLocation.innerHTML = ''
             futureDates.innerHTML = ''
-            console.log(data)
             var iconURL = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}.png`
-            console.log(iconURL)
 
             var cityName = document.createElement("p")
             cityName.setAttribute("class", "cityCurrently")
@@ -50,7 +44,7 @@ function getApi(city, lat, lon) {
 
             var currentTempForecast = document.createElement("p")
             currentTempForecast.setAttribute("class", "tempCurrently")
-            var temperatureF = ((data.current.temp - 273.15) * 9/5 + 32)
+            var temperatureF = ((data.current.temp - 273.15) * 9 / 5 + 32)
             currentTempForecast.textContent = temperatureF.toFixed(2);
             todaysForecast.append(currentTempForecast);
 
@@ -89,13 +83,14 @@ function getApi(city, lat, lon) {
             currentIcon.setAttribute("src", iconURL)
             todaysForecast.append(currentIcon)
 
-            var currentDate = document.createElement("p")
-            currentDate.setAttribute("class", "dayCurrently")
-            var dateString = new Date (data.current.dt * 1000)
-            currentDate.textContent = dateString;
-            todaysForecast.append(currentDate);
+            var whatIsToday = $("#currentDay").text(moment().format("MMM Do, YYYY"));
 
-            console.log(iconURL)
+            $(".tomorrow").text(moment().add(1, 'days').format("MMM Do, YYYY"));
+            $(".twoDays").text(moment().add(2, 'days').format("MMM Do, YYYY"));
+            $(".threeDays").text(moment().add(3, 'days').format("MMM Do, YYYY"));
+            $(".fourDays").text(moment().add(4, 'days').format("MMM Do, YYYY"));
+            $(".fiveDays").text(moment().add(5, 'days').format("MMM Do, YYYY"));
+
             for (var i = 0; i < 5; i++) {
                 var fiveIconURL = `http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}.png`
                 var fiveDayIcon = document.createElement("img")
@@ -106,7 +101,7 @@ function getApi(city, lat, lon) {
             for (var i = 0; i < 5; i++) {
                 var tempForecast = document.createElement("span")
                 tempForecast.setAttribute("class", "fiveDayTemp")
-                var fiveTemperatureF = ((data.daily[i].temp.max - 273.15) * 9/5 + 32)
+                var fiveTemperatureF = ((data.daily[i].temp.max - 273.15) * 9 / 5 + 32)
                 tempForecast.textContent = fiveTemperatureF.toFixed(2);
                 fiveDayTempLocation.append(tempForecast);
 
@@ -120,14 +115,7 @@ function getApi(city, lat, lon) {
                 var fiveWindMPH = (data.daily[i].wind_speed * 2.237);
                 windForecast.textContent = fiveWindMPH.toFixed(2);
                 fiveDayWindLocation.append(windForecast);
-
-                // var fiveDates = document.createElement("span")
-                // fiveDates.setAttribute("class", "fiveDayTemp")
-                // var newDatesStrings = new Date (data.daily[i].dt * 1000)
-                // fiveDates.textContent = newDatesStrings
-                // futureDates.append(fiveDates)
             }
-            //use data.current for the current weather, then for loop through the data.daily for each of the five cards (don't for loop length, just for loop 5 times) when you want to put
         })
 }
 
@@ -141,7 +129,6 @@ pastCities.textContent = '';
 
 function beginSearch() {
     var currentCity = $(searchRow).children(".searchBar").val()
-    console.log("You sure clicked that Search Button, big guy");
     searchedCities.push(currentCity)
     localStorage.setItem("City History", searchedCities);
     cityButtons(searchedCities)
@@ -164,8 +151,6 @@ function handleSearchHistory(event) {
     var clickedCity = historyButton.getAttribute("data-search");
     getCoordinates(clickedCity)
 }
-
-//$("#currentDay").text(moment().format("MMM Do, YYYY"));
 
 searchButton.addEventListener("click", beginSearch)
 
