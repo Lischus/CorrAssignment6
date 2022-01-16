@@ -1,33 +1,3 @@
-// function getApi() {
-//     // fetch request gets a list of all the repos for the node.js organization
-//     var requestUrl = 'https://api.github.com/orgs/nodejs/repos';
-
-//     fetch(requestUrl)
-//       .then(function (response) {
-//         return response.json();
-//       })
-//       .then(function (data) {
-//         console.log(data)
-//         //Loop over the data to generate a table, each table row will have a link to the repo url
-//         for (var i = 0; i < data.length; i++) {
-//           // Creating elements, tablerow, tabledata, and anchor
-//           var createTableRow = document.createElement('tr');
-//           var tableData = document.createElement('td');
-//           var link = document.createElement('a');
-
-//           // Setting the text of link and the href of the link
-//           link.textContent = data[i].html_url;
-//           link.href = data[i].html_url;
-
-//           // Appending the link to the tabledata and then appending the tabledata to the tablerow
-//           // The tablerow then gets appended to the tablebody
-//           tableData.appendChild(link);
-//           createTableRow.appendChild(tableData);
-//           tableBody.appendChild(createTableRow);
-//         }
-//       });
-//   }
-
 var searchedCities = []
 
 var searchButton = document.querySelector(".searchBtn")
@@ -49,6 +19,11 @@ function getCoordinates(city) {
 var todaysForecast = document.querySelector(".today")
 
 var fiveDayLocation = document.querySelector(".five-day")
+var fiveDayImageLocation = document.querySelector(".img")
+var fiveDayTempLocation = document.querySelector(".temp")
+var fiveDayHumidLocation = document.querySelector(".humid")
+var fiveDayWindLocation = document.querySelector(".wind")
+var futureDates = document.querySelector(".futureDates")
 
 function getApi(city, lat, lon) {
     var requestURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&appid=61c4e10047acc72ea5e22c4f2a7d9dac`
@@ -58,16 +33,99 @@ function getApi(city, lat, lon) {
             console.log("fetch the URL, please")
             return response.json();
         }).then(function (data) {
+            todaysForecast.innerHTML = ''
+            fiveDayImageLocation.innerHTML = ''
+            fiveDayTempLocation.innerHTML = ''
+            fiveDayHumidLocation.innerHTML = ''
+            fiveDayWindLocation.innerHTML = ''
+            futureDates.innerHTML = ''
             console.log(data)
             var iconURL = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}.png`
-            var temperatureURL = ``
+            console.log(iconURL)
+
+            var cityName = document.createElement("p")
+            cityName.setAttribute("class", "cityCurrently")
+            cityName.textContent = city
+            todaysForecast.append(cityName)
+
+            var currentTempForecast = document.createElement("p")
+            currentTempForecast.setAttribute("class", "tempCurrently")
+            var temperatureF = ((data.current.temp - 273.15) * 9/5 + 32)
+            currentTempForecast.textContent = temperatureF.toFixed(2);
+            todaysForecast.append(currentTempForecast);
+
+            var currentHumidForecast = document.createElement("p")
+            currentHumidForecast.setAttribute("class", "humidCurrently")
+            currentHumidForecast.textContent = data.current.humidity;
+            todaysForecast.append(currentHumidForecast);
+
+            var currentWindSpeed = document.createElement("p")
+            currentWindSpeed.setAttribute("class", "windCurrently")
+            var windMPH = (data.current.wind_speed * 2.237);
+            currentWindSpeed.textContent = windMPH.toFixed(2);
+            todaysForecast.append(currentWindSpeed);
+
+            var currentUV = document.createElement("span")
+            currentUV.setAttribute("class", "uvIndex")
+            currentUV.textContent = data.current.uvi;
+            todaysForecast.append(currentUV);
+
+            var currentUVColor = ""
+
+            if (data.current.uvi <= 2.99) {
+                currentUVColor = "green"
+            } else if (data.current.uvi >= 3 && data.current.uvi <= 5.99) {
+                currentUVColor = "yellow"
+            } else {
+                currentUVColor = "red"
+            }
+
+            var currentUVIndexColor = document.createElement("p")
+            currentUVIndexColor.setAttribute("class", `uvIndex ${currentUVColor}`)
+            todaysForecast.append(currentUVIndexColor)
+
+            var currentIcon = document.createElement("img")
+            currentIcon.setAttribute("class", "currentDayIcon")
+            currentIcon.setAttribute("src", iconURL)
+            todaysForecast.append(currentIcon)
+
+            var currentDate = document.createElement("p")
+            currentDate.setAttribute("class", "dayCurrently")
+            var dateString = new Date (data.current.dt * 1000)
+            currentDate.textContent = dateString;
+            todaysForecast.append(currentDate);
+
             console.log(iconURL)
             for (var i = 0; i < 5; i++) {
                 var fiveIconURL = `http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}.png`
                 var fiveDayIcon = document.createElement("img")
                 fiveDayIcon.setAttribute("class", "fiveDayWeatherIcon")
                 fiveDayIcon.setAttribute("src", fiveIconURL)
-                fiveDayLocation.append(fiveDayIcon);
+                fiveDayImageLocation.append(fiveDayIcon);
+            }
+            for (var i = 0; i < 5; i++) {
+                var tempForecast = document.createElement("span")
+                tempForecast.setAttribute("class", "fiveDayTemp")
+                var fiveTemperatureF = ((data.daily[i].temp.max - 273.15) * 9/5 + 32)
+                tempForecast.textContent = fiveTemperatureF.toFixed(2);
+                fiveDayTempLocation.append(tempForecast);
+
+                var humidForecast = document.createElement("span")
+                humidForecast.setAttribute("class", "fiveDayHumid")
+                humidForecast.textContent = data.daily[i].humidity;
+                fiveDayHumidLocation.append(humidForecast);
+
+                var windForecast = document.createElement("span")
+                windForecast.setAttribute("class", "fiveDayWind")
+                var fiveWindMPH = (data.daily[i].wind_speed * 2.237);
+                windForecast.textContent = fiveWindMPH.toFixed(2);
+                fiveDayWindLocation.append(windForecast);
+
+                // var fiveDates = document.createElement("span")
+                // fiveDates.setAttribute("class", "fiveDayTemp")
+                // var newDatesStrings = new Date (data.daily[i].dt * 1000)
+                // fiveDates.textContent = newDatesStrings
+                // futureDates.append(fiveDates)
             }
             //use data.current for the current weather, then for loop through the data.daily for each of the five cards (don't for loop length, just for loop 5 times) when you want to put
         })

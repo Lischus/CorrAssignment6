@@ -5,6 +5,10 @@ header {
     color: white;
 }
 
+body {
+    background-color: #2b8fd4;
+}
+
 .col-2 {
     margin-left: 20px;
     margin-top: 10px;
@@ -12,4 +16,46 @@ header {
 
 :-ms-input-placeholder {
     font-style:italic;
+}
+
+.fiveDayTemp {
+    display: flex;
+    margin-left: 20px;
+}
+
+.red, .green, .yellow {
+    width: 10px;
+    border-radius: 50%;
+    height: 10px;
+    display: inline-block;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.currentDayIcon {
+    display: block;
+}
+
+.col-lg-2, .today {
+    font-weight: bold;
+}
+
+.fiveDayWeatherIcon, .fiveDayHumid, .fiveDayWind {
+    display:flex;
+}
+
+.fiveDayHumid, .fiveDayWind, .fiveDayTemp {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    font-weight: bold;
 }
