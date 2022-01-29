@@ -1,1 +1,9 @@
-A weather checking website!  If you put in the name of a city and hit the search button you'll be presented with different types of information pertaining to that area's weather!  It even comes with the next five days of weather too!  Wow!  After you make a search for a town or city that town or city will be turned into its own button beneath the search bar!  If you give that button a click you'll be able to look at that location's weather information all over again!
+PASSWORD GENERATOR
+<a href="https://lischus.github.io/WeatherChecker/">Deployed Application</a>
+
+<p>This application checks the weather!  Once you type a city in the search bar the weather for that day and the next five days after will appear on the screen!  You'll get information such as the temperature, the wind speed, and the current conditions!
+
+<img src="./images/weatherChecker.PNG">
+<img src="./images/checkedWeather.PNG">
+
+<p>To contact me please reach me by email!  <a href="mailto:martinjcorr2@gmail.com">martinjcorr2@gmail.com</a>
